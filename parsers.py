@@ -3,10 +3,10 @@ class EnemParser(object):
         self.data = data
 
     def school_code(self):
-        return self.data[204-1:204-1+8].strip()
+        return int(self.data[204-1:204-1+8].strip())
 
     def city_code(self):
-        return self.data[212-1:212-1+7].strip()
+        return int(self.data[212-1:212-1+7].strip())
 
     def city_name(self):
         return self.data[219-1:219-1+150].strip()
@@ -32,6 +32,7 @@ class SchoolParser(object):
 
     def __line_for_city_code(self, code):
         """Parses one line given a city code"""
+        code = str(code)
         with open(self.file_name) as f:
             line = next(line for line in open("./city_names_fixture.csv") if line.split(",")[3] == code)
 

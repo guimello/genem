@@ -11,9 +11,9 @@ def clean_up_db():
 
 # Fixture data used to compare to the parsed data
 fixture_data = dict(
-        school_code = "35058836",
+        school_code = 35058836,
         school_name = "LEANDRO FRANCESCHINI DR ESCOLA MUNICIPAL",
-        city_code = "3552403",
+        city_code = 3552403,
         city_name = "SUMARE",
         state_code = "SP",
         grade = 543.30,
