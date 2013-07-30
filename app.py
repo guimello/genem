@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from models import *
 
 app = Flask(__name__, static_folder="public", static_url_path="")
-connect("genem")
+connect("genemprod")
 
 @app.route("/")
 def home():
