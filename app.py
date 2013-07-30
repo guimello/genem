@@ -11,7 +11,7 @@ def home():
 @app.route("/find_school", methods=['GET'])
 def find_school():
     school_name = request.args.get("term").upper()
-    schools = School.objects(name__contains = school_name).order_by("name")
+    schools = School.objects(name__contains=school_name).order_by("name")
 
     json_dict = dict(schools = [])
     for s in schools:
