@@ -1,6 +1,7 @@
 import unittest
 from parsers import *
 from models import *
+from processor import *
 
 connect("genemtest")
 
@@ -17,7 +18,7 @@ fixture_data = dict(
         city_name = "SUMARE",
         state_code = "SP",
         grade = 543.30,
-        grade_frequency = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0])
+        grade_frequency = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0])
 
 class EnemParserTest(unittest.TestCase):
     def setUp(self):
@@ -55,10 +56,10 @@ class SchoolParserTest(unittest.TestCase):
 class ProcessorTest(unittest.TestCase):
     def setUp(self):
         clean_up_db()
-        self.processor = Processor("./fixture_enem.txt")
+        self.processor = Processor(enem_file_name = "./fixture_enem.txt", city_names_file_name = "./city_names_fixture.csv")
         self.processor.work()
 
-    def test_create_a_city(self):
+    def test_create_a_state(self):
         state = State.objects.first()
         self.assertEqual(state.code, fixture_data["state_code"])
         self.assertEqual(state.grades, fixture_data["grade_frequency"])
@@ -81,7 +82,21 @@ class ProcessorTest(unittest.TestCase):
     def test_updates_a_state(self):
         self.processor.work() # Redo work to fake data
         state = State.objects.first()
-        self.assertEqual(state.grades, [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0])
+        self.assertEqual(state.grades, [0, 0, 0, 0, 0, 2, 0, 0, 0, 0])
+
+    def test_updates_a_city(self):
+        self.processor.work() # Redo work to fake data
+        city = City.objects.first()
+        self.assertEqual(city.grades, [0, 0, 0, 0, 0, 2, 0, 0, 0, 0])
+
+    def test_updates_a_school(self):
+        self.processor.work() # Redo work to fake data
+        school = School.objects.first()
+        self.assertEqual(school.grades, [0, 0, 0, 0, 0, 2, 0, 0, 0, 0])
+
+    def test_grade_bucket(self):
+        self.assertEqual(self.processor._grade_bucket(33.45), 0)
+        self.assertEqual(self.processor._grade_bucket(450.0), 4)
 
 
 if __name__ == "__main__":
