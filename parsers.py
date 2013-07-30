@@ -19,7 +19,7 @@ class EnemParser(object):
         return self.data[533-1:533-1+1] == '1'
 
     def grade(self):
-        return self.data[537-1:537-1+9].strip()
+        return float(self.data[537-1:537-1+9].strip())
 
 
 class SchoolParser(object):

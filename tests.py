@@ -16,7 +16,7 @@ fixture_data = dict(
         city_code = "3552403",
         city_name = "SUMARE",
         state_code = "SP",
-        grade = "543.30",
+        grade = 543.30,
         grade_frequency = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0])
 
 class EnemParserTest(unittest.TestCase):
