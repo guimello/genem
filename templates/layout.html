@@ -2,12 +2,45 @@
 <html>
   <head>
     <title>{{ title }}</title>
+
+    <script src="js/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.3.custom.min.css">
   </head>
 
   <body>
     <div id="content">
       {% block content %}{% endblock %}
+
+      <input id="query" name="query"/>
     </div>
+
+    <script type="text/javascript">
+    //<![CDATA[
+      $(function() {
+        $( "#query" ).autocomplete({
+          source: function (request, response) {
+            $.getJSON("/find_school?term=" + request.term, function (data) {
+              response($.map(data.schools, function (value, key) {
+                return value;
+              }));
+            })
+          },
+          minLength: 4,
+          delay: 100,
+          select: function( event, ui ) {
+            if (ui.item) {
+              $("#content").append(ui.item.code + " " + ui.item.name);
+            }
+          }
+        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+          return $( "<li>" )
+            .append("<a>" + item.name + "</a>")
+            .appendTo( ul );
+        };
+      });
+    //]]>
+    </script>
   </body>
 </html>
 
