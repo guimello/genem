@@ -25,16 +25,18 @@ class EnemParser(object):
 class SchoolParser(object):
     def __init__(self, file_name):
         self.file_name = file_name
+        self.not_found_codes = set()
 
     def school_name(self, code):
         """Returns the city name based on its code"""
-        return self.__line_for_city_code(code).split(",")[4].strip()
+        return self.__line_for_city_code(code).split(",")[3].strip()
 
     def __line_for_city_code(self, code):
         """Parses one line given a city code"""
         code = str(code)
-        with open(self.file_name) as f:
-            line = next(line for line in open("./city_names_fixture.csv") if line.split(",")[3] == code)
-
-        return line
-
+        try:
+            return next(line for line in open(self.file_name) if line.split(",")[2] == code)
+        except StopIteration:
+            self.not_found_codes.add(code)
+            print "Could not find city name with code %s" % code
+            raise

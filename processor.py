@@ -17,6 +17,8 @@ class Processor(object):
                     school = self._parse_school(enem_parser)
                     city = self._parse_city(enem_parser, school)
                     state = self._parse_state(enem_parser, city)
+                except StopIteration as si:
+                    pass
                 except Exception as e:
                     traceback.print_exc()
 
