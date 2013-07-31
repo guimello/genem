@@ -18,9 +18,8 @@ def find_school():
         json_dict["schools"].append(dict(code=s.code, name=s.name))
     return jsonify(json_dict)
 
-@app.route("/chart", methods=['GET'])
-def chart():
-    school_code = request.args.get("school")
+@app.route("/chart/<int:school_code>", methods=['GET'])
+def chart(school_code):
     school = School.objects.get(code=school_code)
     city = City.objects.get(code=school.city_code)
 

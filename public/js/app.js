@@ -11,7 +11,7 @@ $(function() {
     delay: 100,
     select: function( event, ui ) {
       if (ui.item) {
-        $.getJSON("/chart?school=" + ui.item.code, drawVisualization);
+        $.getJSON("/chart/" + ui.item.code, drawVisualization);
       }
     }
   }).data("ui-autocomplete")._renderItem = function( ul, item ) {
