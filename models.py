@@ -2,6 +2,7 @@ from mongoengine import *
 
 class PercentageGrade(object):
     def relative_grades(self):
+        """Returns grades as relative percentages"""
         total = float(sum(self.grades))
         return [ g / total * 100 for g in self.grades ]
 
@@ -10,6 +11,7 @@ class State(Document, PercentageGrade):
     grades = ListField(IntField())
 
     def to_json(self):
+        """Returns a dictionary representing this objects as json"""
         return dict(
                 code=self.code,
                 grades=self.grades,
@@ -22,6 +24,7 @@ class City(Document, PercentageGrade):
     grades = ListField(IntField())
 
     def to_json(self):
+        """Returns a dictionary representing this objects as json"""
         return dict(
                 code=self.code,
                 name=self.name,
@@ -37,6 +40,7 @@ class School(Document, PercentageGrade):
     grades = ListField(IntField())
 
     def to_json(self):
+        """Returns a dictionary representing this objects as json"""
         return dict(
                 code=self.code,
                 name=self.name,

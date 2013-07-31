@@ -1,4 +1,6 @@
 class EnemParser(object):
+    """Parsers a file entry (line)"""
+
     def __init__(self, data):
         self.data = data
 
@@ -23,6 +25,8 @@ class EnemParser(object):
 
 
 class SchoolParser(object):
+    """Parsers the csv to find a city name by its code"""
+
     def __init__(self, file_name):
         self.file_name = file_name
         self.not_found_codes = set()
