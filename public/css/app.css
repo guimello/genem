@@ -2,7 +2,7 @@ body {
   padding-top: 50px;
 }
 .starter-template {
-  padding: 40px 15px;
+  padding: 22px 15px;
   text-align: center;
 }
 .navbar-brand {
@@ -15,4 +15,8 @@ body {
   max-height: 300px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+#visualization {
+  margin-top: 15px;
 }
