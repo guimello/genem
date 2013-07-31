@@ -70,23 +70,4 @@ class Processor(object):
         return [0 for _ in xrange(10)]
 
     def _grade_bucket(self, grade):
-        if grade >= 0 and grade <= 99.99:
-            return 0
-        elif grade >= 100 and grade <= 199.99:
-            return 1
-        elif grade >= 200 and grade <= 299.99:
-            return 2
-        elif grade >= 300 and grade <= 399.99:
-            return 3
-        elif grade >= 400 and grade <= 499.99:
-            return 4
-        elif grade >= 500 and grade <= 599.99:
-            return 5
-        elif grade >= 600 and grade <= 699.99:
-            return 6
-        elif grade >= 700 and grade <= 799.99:
-            return 7
-        elif grade >= 800 and grade <= 899.99:
-            return 8
-        elif grade >= 900 and grade <= 1000:
-            return 9
+        return int(grade / 100)
