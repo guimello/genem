@@ -1,3 +1,5 @@
+import logging
+
 class EnemParser(object):
     """Parsers a file entry (line)"""
 
@@ -42,5 +44,5 @@ class SchoolParser(object):
             return next(line for line in open(self.file_name) if line.split(",")[2] == code)
         except StopIteration:
             self.not_found_codes.add(code)
-            print "Could not find city name with code %s" % code
+            logging.info("Could not find city name with code %s" % code)
             raise

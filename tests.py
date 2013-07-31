@@ -22,7 +22,7 @@ fixture_data = dict(
 
 class EnemParserTest(unittest.TestCase):
     def setUp(self):
-        with open("./fixture_enem.txt") as f:
+        with open("./fixtures/enem.txt") as f:
             line = f.readline()
         self.parser = EnemParser(data = line)
 
@@ -47,7 +47,7 @@ class EnemParserTest(unittest.TestCase):
 
 class SchoolParserTest(unittest.TestCase):
     def setUp(self):
-        self.parser = SchoolParser(file_name = "./city_names_fixture.csv")
+        self.parser = SchoolParser(file_name = "./fixtures/city_names.csv")
 
     def test_parse_school_name(self):
         self.assertEqual(self.parser.school_name(fixture_data["school_code"]), fixture_data["school_name"])
@@ -56,7 +56,7 @@ class SchoolParserTest(unittest.TestCase):
 class ProcessorTest(unittest.TestCase):
     def setUp(self):
         clean_up_db()
-        self.processor = Processor(enem_file_name = "./fixture_enem.txt", city_names_file_name = "./city_names_fixture.csv")
+        self.processor = Processor(enem_file_name = "./fixtures/enem.txt", city_names_file_name = "./fixtures/city_names.csv")
         self.processor.work()
 
     def test_create_a_state(self):

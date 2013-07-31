@@ -1,6 +1,7 @@
 from parsers import *
 from models import *
 import traceback
+import logging
 
 class Processor(object):
     """Loads the ENEM file parsing and saving to the db"""
@@ -24,7 +25,7 @@ class Processor(object):
                 except StopIteration as si:
                     pass
                 except Exception as e:
-                    traceback.print_exc()
+                    logging.info(traceback.print_exc() or e)
 
     def _parse_school(self, enem_parser):
         """Parses and save/update a school"""
