@@ -13,9 +13,7 @@ def find_school():
     school_name = request.args.get("term").upper()
     schools = School.objects(name__contains=school_name).order_by("name")
 
-    json_dict = dict(schools = [])
-    for s in schools:
-        json_dict["schools"].append(dict(code=s.code, name=s.name))
+    json_dict = dict(schools=[dict(code=s.code, name=s.name) for s in schools])
     return jsonify(json_dict)
 
 @app.route("/chart/<int:school_code>", methods=['GET'])
@@ -23,9 +21,7 @@ def chart(school_code):
     school = School.objects.get(code=school_code)
     city = City.objects.get(code=school.city_code)
 
-    return jsonify(dict(
-        school=dict(code=school.code, name=school.name, grades=school.grades, relative_grades=school.relative_grades()),
-        city=dict(code=city.code, name=city.name, grades=city.grades, relative_grades=city.relative_grades())))
+    return jsonify(dict(school=school.to_json(), city=city.to_json()))
 
 if __name__ == "__main__":
     app.run(port = 3000)
