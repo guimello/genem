@@ -6,7 +6,7 @@ connect("genemprod")
 
 @app.route("/", methods=['GET'])
 def home():
-    return render_template("layout.html", title = "Test App")
+    return render_template("home.html", title = "ENEM")
 
 @app.route("/find_school", methods=['GET'])
 def find_school():
