@@ -8,7 +8,7 @@ $(function() {
       })
     },
     minLength: 3,
-    delay: 100,
+    delay: 300,
     select: function( event, ui ) {
       if (ui.item) {
         $.getJSON("/chart/" + ui.item.code, drawVisualization);
