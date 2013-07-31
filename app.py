@@ -1,8 +1,13 @@
+import os
 from flask import Flask, render_template, request, jsonify
 from models import *
 
 app = Flask(__name__, static_folder="public", static_url_path="")
-connect("genemprod")
+
+# Db config
+connection_opts = dict()
+if os.environ.get('MONGOHQ_URL'): connection_opts['host'] = os.environ.get('MONGOHQ_URL')
+connect("genemprod", **connection_opts)
 
 @app.route("/", methods=['GET'])
 def home():
