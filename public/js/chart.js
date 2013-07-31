@@ -1,37 +1,74 @@
-google.load('visualization', '1', {packages: ['corechart']});
-
 function drawVisualization(data) {
-  var chart_data = [['Nota', 'Escola', 'Cidade']];
-  var label, school_grade, city_grade;
+  var chart_data = [[], []];
   var chart_title = data.school.name.toLowerCase() +
     " vs " + data.city.name.toLowerCase() + " - SP";
 
   for (i = 0, length = data.school.relative_grades.length; i < length; i++) {
-    label = i + "-" + (i + 1);
-    school_grade = data.school.relative_grades[i] / 100;
-    city_grade = data.city.relative_grades[i] / 100;
-
-    chart_data[i + 1] = [label, school_grade, city_grade];
+    chart_data[0][i] = { y: data.school.relative_grades[i], grade: data.school.grades[i] };
+    chart_data[1][i] = { y: data.city.relative_grades[i], grade: data.city.grades[i] };
   }
 
-  chart_data = google.visualization.arrayToDataTable(chart_data);
-
-  // Formatting the tooltip
-  var formatter = new google.visualization.NumberFormat({
-    pattern: '#%',
-    fractionDigits: 2
+  $('#visualization').highcharts({
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: chart_title,
+      margin: 30
+    },
+    subtitle: {
+      text: 'Competência Ciências da Natureza'
+    },
+    xAxis: {
+      title: {
+        text: 'Nota'
+      },
+      categories: [
+          '0-1',
+          '1-2',
+          '2-3',
+          '3-4',
+          '4-5',
+          '5-6',
+          '6-7',
+          '7-8',
+          '8-9',
+          '9-10'
+      ]
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Frequência de alunos (%)'
+      },
+      labels: {
+        formatter: function() {
+          return this.value + " %";
+        }
+      }
+    },
+    tooltip: {
+      formatter: function() {
+        return "Relativo: <b>" +
+          Highcharts.numberFormat(this.y, 2, ",") +
+          " %</b><br/>Absoluto: <b>" +
+          Highcharts.numberFormat(this.point.grade, 0, ",", ".") +
+          " alunos</b>";
+      }
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0,
+        groupPadding: 0,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: 'Escola',
+      data: chart_data[0]
+    }, {
+      name: 'São Paulo - SP',
+      data: chart_data[1]
+    }]
   });
-
-  formatter.format(chart_data, 1);
-  formatter.format(chart_data, 2);
-
-  // Create and draw the visualization.
-  new google.visualization.ColumnChart(document.getElementById('visualization')).
-    draw(chart_data, {
-          title: chart_title,
-          width:800, height:400,
-          hAxis: { title: "Nota" },
-          vAxis: { title: "Frequência (%)", format:'#%' },
-          bar: { groupWidth: "99%" }}
-    );
 }
