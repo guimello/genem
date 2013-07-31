@@ -25,8 +25,8 @@ def chart():
     city = City.objects.get(code=school.city_code)
 
     return jsonify(dict(
-        school=dict(code=school.code, name=school.name, grades=school.grades),
-        city=dict(code=city.code, name=city.name, grades=city.grades)))
+        school=dict(code=school.code, name=school.name, grades=school.grades, relative_grades=school.relative_grades()),
+        city=dict(code=city.code, name=city.name, grades=city.grades, relative_grades=city.relative_grades())))
 
 if __name__ == "__main__":
     app.run(port = 3000)

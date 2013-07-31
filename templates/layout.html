@@ -5,6 +5,7 @@
 
     <script src="js/jquery-1.9.1.js" type="text/javascript"></script>
     <script src="js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.3.custom.min.css">
   </head>
 
@@ -13,10 +14,13 @@
       {% block content %}{% endblock %}
 
       <input id="query" name="query"/>
+      <div id="visualization" style="width: 500px; height: 400px;"></div>
     </div>
 
     <script type="text/javascript">
     //<![CDATA[
+      google.load('visualization', '1', {packages: ['corechart']});
+
       $(function() {
         $( "#query" ).autocomplete({
           source: function (request, response) {
@@ -30,15 +34,48 @@
           delay: 100,
           select: function( event, ui ) {
             if (ui.item) {
-              $("#content").append(ui.item.code + " " + ui.item.name);
+              $.getJSON("/chart?school=" + ui.item.code, drawVisualization);
             }
           }
         }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-          return $( "<li>" )
-            .append("<a>" + item.name + "</a>")
-            .appendTo( ul );
+          return $( "<li>" ).append("<a>" + item.name + "</a>").appendTo(ul);
         };
       });
+
+      function drawVisualization(data) {
+        var chart_data = [['Nota', 'Escola', 'Cidade']];
+        var label, school_grade, city_grade;
+        var chart_title = data.school.name.toLowerCase() +
+          " vs " + data.city.name.toLowerCase() + " - SP";
+
+        for (i = 0, length = data.school.relative_grades.length; i < length; i++) {
+          label = (i * 100) + "-" + (i * 100 + 100);
+          school_grade = data.school.relative_grades[i] / 100;
+          city_grade = data.city.relative_grades[i] / 100;
+
+          chart_data[i + 1] = [label, school_grade, city_grade];
+        }
+
+        chart_data = google.visualization.arrayToDataTable(chart_data);
+
+        // Formatting the tooltip
+        var formatter = new google.visualization.NumberFormat({
+          pattern: '#%',
+          fractionDigits: 2
+        });
+        formatter.format(chart_data, 1);
+        formatter.format(chart_data, 2);
+
+        // Create and draw the visualization.
+        new google.visualization.ColumnChart(document.getElementById('visualization')).
+          draw(chart_data,
+               {title: chart_title,
+                width:600, height:400,
+                hAxis: {title: "Nota"},
+                vAxis: {title: "Frequência (%)", format:'#%'},
+                bar: {groupWidth: "99%"} }
+          );
+      }
     //]]>
     </script>
   </body>
